@@ -1,19 +1,9 @@
-import * as React from "react"
 import { render } from "react-dom"
-import { createStore, applyMiddleware, Store } from "redux"
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from "react-redux"
-import thunk from "redux-thunk"
 import reportWebVitals from './reportWebVitals';
-
 import App from "./App"
-import rootReducer from "./rootReducer"
-import {ApplicationState, DispatchType, ReduxAction} from "./type";
 import {BrowserRouter} from "react-router-dom";
-
-const store: Store<ApplicationState, ReduxAction> & {
-    dispatch: DispatchType
-} = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+import { store } from "./store";
 
 const rootElement = document.getElementById("root")
 render(

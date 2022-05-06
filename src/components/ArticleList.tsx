@@ -14,10 +14,14 @@ const ArticleList: React.FC = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         // Update the document title using the browser API
-        dispatch(updateBreadcrumbs([
-            {name: "Podcasts"},
-            {name: "Index"},
-        ]))
+        dispatch(
+            updateBreadcrumbs(
+                [
+                    {name: "Podcasts"},
+                    {name: "Index"},
+                ]
+            )
+        )
     });
 
     const articles: readonly IArticle[] = useSelector(
