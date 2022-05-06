@@ -1,19 +1,9 @@
 import * as actionTypes from "./actionTypes"
-import {DispatchType, IBreadcrumbItem} from "../../type";
-import {UpdateBreadcrumbsAction} from "./reducer";
+import {IBreadcrumbItem} from "../../type";
 
 export function updateBreadcrumbs(breadcrumbs: IBreadcrumbItem[]) {
-    const action: UpdateBreadcrumbsAction = {
+    return {
         type: actionTypes.UPDATE_BREADCRUMBS,
         breadcrumbs
-    }
-    return simulateHttpRequest(action)
-}
-
-export function simulateHttpRequest(action: any) {
-    return (dispatch: DispatchType) => {
-        setTimeout(() => {
-            dispatch(action)
-        }, 0)
     }
 }
