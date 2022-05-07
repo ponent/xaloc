@@ -64,13 +64,7 @@ export function updateProgressAudio(progress: number) : UpdateAudioProgressActio
     }
 }
 
-export function setProgressAudio(seconds: number) {
-    const action: SetAudioProgressAction =  {
-        type: actionTypes.SET_PROGRESS,
-        progress: seconds,
-    }
-    return doSetAudioProgress(action)
-}
+export const setProgressAudio = (seconds: number) => audio.currentTime = seconds
 
 const LoggingEnabled = false
 
@@ -112,8 +106,6 @@ const doPlayAudio = (action: PlayAudioAction) => {
             if ( LoggingEnabled ) console.log("onloadedmetadata!")
         })
         await audio.play()
-        dispatch(updateProgressAudio(0))
-
     }
 }
 
@@ -131,11 +123,3 @@ const doSetAudioProgress = (action: SetAudioProgressAction) => {
 export const doStopAudio = () => {
     audio.pause()
 }
-
-/*export function simulateHttpRequest(action: any) {
-    return (dispatch: DispatchType) => {
-        setTimeout(() => {
-            dispatch(action)
-        }, 0)
-    }
-}*/

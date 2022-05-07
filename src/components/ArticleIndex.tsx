@@ -2,14 +2,12 @@ import * as React from "react"
 import {useState} from "react"
 import {shallowEqual, useDispatch, useSelector} from "react-redux"
 import "../App.css"
-import {Outlet, Route, Routes, useLocation} from "react-router-dom";
-import {Article} from "./Article"
+import {Outlet} from "react-router-dom";
 import {AddArticle} from "./AddArticle"
-import {addArticle, removeArticle} from "../store/actionCreators"
+import {addArticle} from "../store/actionCreators"
 import {Dispatch} from "redux"
-
-import {Breadcrumb, Col, Drawer, Row} from 'antd';
 import {ApplicationState, IArticle} from "../type";
+import { Drawer } from "@mantine/core";
 
 const ArticleIndex: React.FC = () => {
     const articles: readonly IArticle[] = useSelector(
@@ -33,10 +31,8 @@ const ArticleIndex: React.FC = () => {
         <>
             <Drawer
                 title="New Article"
-                placement={"right"}
-                closable={false}
                 onClose={() => setDrawerOpen(false)}
-                visible={drawerOpen}
+                opened={drawerOpen}
                 key={"h"}
             >
                 <AddArticle saveArticle={saveArticle}/>

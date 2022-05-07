@@ -1,13 +1,10 @@
 import * as React from "react";
 import {Suspense} from "react";
-import {AudioOutlined, DashboardOutlined, NotificationOutlined, TeamOutlined} from "@ant-design/icons";
 import ArticleIndex from "../ArticleIndex";
-import {Col, Menu, Row, Space} from "antd";
 import {Link, Route, Routes, useLocation} from "react-router-dom";
 import ArticleDetail from "../ArticleDetail";
 import ArticleList from "../ArticleList";
 import Inici from "../Inici/Inici";
-import PlayerComponent from "../Player/Player";
 
 const NotImplemented = React.lazy(() => import("../NotImplemented"));
 
@@ -24,14 +21,14 @@ const MenuItems: IMenuItem[] = [
         name: "Inici",
         url: "/",
         element: <Inici/>,
-        icon: <DashboardOutlined/>,
+        icon: <></>,
         submenus: []
     },
     {
         name: "Podcasts",
         url: "/podcasts",
         element: <ArticleIndex/>,
-        icon: <AudioOutlined/>,
+        icon: <></>,
         submenus: [
             {
                 name: "Podcast List",
@@ -53,14 +50,14 @@ const MenuItems: IMenuItem[] = [
         name: "Autors",
         url: "/autors",
         element: <Suspense fallback={<span>Carregant..</span>}><NotImplemented></NotImplemented></Suspense>,
-        icon: <TeamOutlined/>,
+        icon: <></>,
         submenus: []
     },
     {
         name: "Emissores",
         url: "/emissores",
         element: <Suspense fallback={<span>Carregant..</span>}><NotImplemented></NotImplemented></Suspense>,
-        icon: <NotificationOutlined/>,
+        icon: <></>,
         submenus: []
     },
 ]
@@ -70,23 +67,7 @@ export const MainMenu: React.FC = () => {
     const {pathname} = useLocation();
 
     return (
-        <Row>
-            <Col span={24}>
-                <Menu theme="dark" mode="horizontal" selectedKeys={[pathname.split('/')[1]]}>
-                    {
-                        MenuItems.map(
-                            (menu: IMenuItem) => <Menu.Item key={`${menu.url.split('/')[1]}`}>
-                                <span style={{marginRight: "10px"}}>{menu.icon}</span>
-                                <Link to={`${menu.url}`}>{`${menu.name}`}</Link>
-                            </Menu.Item>
-                        )
-                    }
-                </Menu>
-            </Col>
-            { /* <Col span={6}>
-                <PlayerComponent />
-            </Col> */ }
-        </Row>
+        <></>
     )
 
 }

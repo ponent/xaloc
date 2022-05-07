@@ -92,8 +92,7 @@ const reducer = (
             const ChangeLoadingAudio = action as ChangeLoadingAudioAction;
             return {
                 ...state,
-                loading: ChangeLoadingAudio.loading,
-                progress: 0
+                loading: ChangeLoadingAudio.loading
             }
         case actionTypes.UPDATE_PROGRESS:
             const UpdateAudioProgress = action as UpdateAudioProgressAction;
