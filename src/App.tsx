@@ -43,7 +43,7 @@ const mockdata = [
         icon: AccessPoint,
         initiallyOpened: true,
         links: [
-            { label: 'Visió General', link: '/', isSelected: true },
+            { label: 'Visió General', link: '/podcasts', isSelected: true },
             { label: 'Economia', link: '/' },
             { label: 'Ciència', link: '/' },
         ],
@@ -269,7 +269,7 @@ const App: React.FC = () => {
                 </Header>
             }
         >
-            <Text>Resize app to see responsive navbar in action</Text>
+            <MainMenuRoutes/>
         </AppShell>
         /*<main>
             <Layout style={{height: "100vh"}}>
