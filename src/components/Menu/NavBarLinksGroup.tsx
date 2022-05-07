@@ -45,7 +45,7 @@ interface LinksGroupProps {
   icon: TablerIcon;
   label: string;
   initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  links?: { label: string; link: string, isSelected?: boolean }[];
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
@@ -60,6 +60,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
       href={link.link}
       key={link.label}
       onClick={(event) => event.preventDefault()}
+      style={{fontWeight : link.isSelected ? "bold" : "normal"}}
     >
       {link.label}
     </Text>
