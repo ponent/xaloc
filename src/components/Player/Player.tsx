@@ -50,7 +50,7 @@ const PlayerComponent: React.FC = () => {
     }
 
     const onChange = (value: number) => {
-        dispatch(setProgressAudio(Math.round(value)))
+        setProgressAudio(Math.round(value))
     }
 
     const slider = (

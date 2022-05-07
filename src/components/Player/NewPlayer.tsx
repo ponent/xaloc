@@ -1,5 +1,14 @@
-import React from 'react';
-import { createStyles, Card, Image, Avatar, Text, Group } from '@mantine/core';
+import React, { Dispatch } from 'react';
+import { createStyles, Card, Image, Avatar, Text, Group, Slider, Stack, Container, Space, Center, LoadingOverlay, Loader } from '@mantine/core';
+import { IPlayerState } from '../../store/player/reducer';
+import { ApplicationState } from '../../type';
+import { shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useHover } from '@mantine/hooks';
+import { doResumeAudio, doStopAudio, setProgressAudio } from '../../store/player/actionCreators';
+
+import { ThemeIcon } from '@mantine/core';
+import { PlayerPlay, PlayerPause } from 'tabler-icons-react';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -10,11 +19,13 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 700,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     lineHeight: 1.2,
+    margin: 0
   },
 
-  body: {
-    padding: theme.spacing.md,
+  audio_controls: {
+    cursor: 'pointer'
   },
+
 }));
 
 interface ArticleCardVerticalProps {
@@ -36,31 +47,73 @@ export const NewPlayer = ({
   author,
 }: ArticleCardVerticalProps) => {
   const { classes } = useStyles();
+
+  const player: IPlayerState = useSelector(
+    (state: ApplicationState) => state.player,
+    shallowEqual
+  )
+
+  const { hovered, ref } = useHover();
+
+  const renderHHMMSSGivenSeconds = (seconds: number) => {
+    const date = new Date(0);
+    try {
+      const roundedSeconds = Math.round(seconds)
+      date.setSeconds(roundedSeconds);
+      return date.toISOString().substr(11, 8);
+    } catch (e) {
+    }
+    return "00:00:00"
+  }
+
+  const onChange = (value: number) => setProgressAudio(Math.round(value))
+  const pause = () => doStopAudio()
+  const resume = () => doResumeAudio()
+
+  const playerSlider = <Slider
+    defaultValue={player.progress}
+    value={player.progress}
+    min={0}
+    max={player.duration == -1 ? 0 : Math.round(player.duration)}
+    ref={ref}
+    label={renderHHMMSSGivenSeconds(player.progress)}
+    onChange={onChange}
+    styles={{
+
+    }}
+    disabled={player.duration == -1}
+  />
+
   return (
+    player.url === "" ? <></> : 
     <Card withBorder radius="md" p={0} className={classes.card}>
-      <Group noWrap spacing={0}>
-        {/* <Image src={image} height={40} width={40} /> */}
-        <div className={classes.body}>
-          <Text transform="uppercase" color="dimmed" weight={700} size="xs">
-            {category}
-          </Text>
-          <Text className={classes.title} mt="xs" mb="md">
-            {title}
-          </Text>
-          <Group noWrap spacing="xs">
-            <Group spacing="xs" noWrap>
-              <Avatar size={20} src={author.avatar} />
-              <Text size="xs">{author.name}</Text>
-            </Group>
-            <Text size="xs" color="dimmed">
-              •
-            </Text>
-            <Text size="xs" color="dimmed">
-              {date}
-            </Text>
+      <LoadingOverlay visible={player.loading} />
+      <Container px={15}>
+        <Stack spacing={0}>
+          <Stack align={"center"} py={15}>
+            <ThemeIcon radius="xl" size="xl" className={classes.audio_controls} onClick={() => player.playing ? pause() : resume()}>
+              {player.playing ? <PlayerPause /> : <PlayerPlay />}
+            </ThemeIcon>
+          </Stack>
+          <Stack>
+            {playerSlider}
+          </Stack>
+          <Group position={"left"} py={15}>
+            <Stack>
+              <Avatar size={40} src={player.icon} />
+            </Stack>
+            <Stack spacing={0}>
+              <Text className={classes.title} mt="xs">
+                {player.duration == -1 ? <Loader variant="bars" size={10} color={"dark"} /> : <></>} {player.title}
+              </Text>
+              <Text size="xs" color="dimmed">
+                {renderHHMMSSGivenSeconds(player.progress)}
+                {player.duration != -1 ? " | " + renderHHMMSSGivenSeconds(player.duration) : ""}
+              </Text>
+            </Stack>
           </Group>
-        </div>
-      </Group>
+        </Stack>
+      </Container>
     </Card>
   );
 }

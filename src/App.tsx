@@ -1,16 +1,8 @@
 import React, { useState } from "react"
 import "./App.css"
-import { Col, Layout, Row, Space } from 'antd';
-import { MainMenu, MainMenuRoutes } from "./components/Menu/MainMenu";
-import { Breadcrumbs } from "./components/Breadcrumbs/Breadcrumbs";
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
-import { updateProgressAudio } from "./store/player/actionCreators";
-import { useEffect } from "react";
-import Player from "./components/Player/Player";
-import { upperFirst } from '@mantine/hooks';
+import { MainMenuRoutes } from "./components/Menu/MainMenu";
 
-import { Group, Code, ScrollArea, createStyles, Button, Image, MantineProvider, ColorScheme, ThemeIcon, UnstyledButton, Center } from '@mantine/core';
+import { Group, ScrollArea, createStyles, ColorScheme, UnstyledButton, Center } from '@mantine/core';
 
 
 import {
