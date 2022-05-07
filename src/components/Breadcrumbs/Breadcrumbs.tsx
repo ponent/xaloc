@@ -1,7 +1,8 @@
 import * as React from "react"
 import {shallowEqual, useSelector} from "react-redux"
-import {Breadcrumb} from 'antd';
 import {ApplicationState, IBreadcrumbItem} from "../../type";
+import { Breadcrumbs as MantineBreadcrumbs, Anchor } from '@mantine/core';
+
 
 export const Breadcrumbs: React.FC = () => {
     const breadcrumbs: readonly IBreadcrumbItem[] = useSelector(
@@ -10,10 +11,12 @@ export const Breadcrumbs: React.FC = () => {
     )
 
     return (
-        <Breadcrumb style={{margin: '16px 0'}}>
-            {
-                breadcrumbs.map((breadcrumb: IBreadcrumbItem) => <Breadcrumb.Item key={breadcrumb.name}>{breadcrumb.name}</Breadcrumb.Item>)
-            }
-        </Breadcrumb>
+        <MantineBreadcrumbs style={{margin: '16px 0'}}>
+            {breadcrumbs.map((item, index) => (
+                <Anchor href={"#"} key={index}>
+                {item.name}
+              </Anchor>
+            ))}
+        </MantineBreadcrumbs>
     )
 }

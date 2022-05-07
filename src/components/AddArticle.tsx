@@ -1,6 +1,5 @@
 import * as React from "react"
 
-import { Form, Input, Button } from 'antd';
 import {IArticle} from "../type";
 
 
@@ -23,7 +22,7 @@ export const AddArticle: React.FC<Props> = ({ saveArticle }) => {
     }
 
     return (
-        <Form
+        /*<Form
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
@@ -54,6 +53,7 @@ export const AddArticle: React.FC<Props> = ({ saveArticle }) => {
                 </Button>
             </Form.Item>
 
-        </Form>
+        </Form>*/
+        <></>
     )
 }

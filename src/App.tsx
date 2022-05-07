@@ -246,16 +246,6 @@ const App: React.FC = () => {
                                 </UnstyledButton>
                             </Group>
                             </div>
-                            {/*<div>
-                                <Group spacing={10}>
-                                    <span>Source Code</span>
-                                    <Link to="https://github.com/ponent/xaloc">
-                                        <ThemeIcon variant="filled" size={30}>
-                                            <BrandGithub size={18} />
-                                        </ThemeIcon>
-                                    </Link>
-                                </Group>
-                            </div>*/}
                         </Group>
                     </div>
                 </Header>
@@ -263,24 +253,7 @@ const App: React.FC = () => {
         >
             <MainMenuRoutes/>
         </AppShell>
-        /*<main>
-            <Layout style={{height: "100vh"}}>
-                <Header style={{position: 'fixed', zIndex: 1, width: '100%'}}>
-                    <div className="logo"/>
-                    <MainMenu/>
-                </Header>
-                <Content className="site-layout" style={{marginTop: 64}}>
-
-                    <Player/>
-
-                    <div style={{padding: '0 50px'}}>
-                        <Breadcrumbs/>
-                        <MainMenuRoutes/>
-                    </div>
-                </Content>
-                <Footer style={{textAlign: 'center'}}><span></span></Footer>
-            </Layout>
-        </main>*/
+        
     )
 }
 
