@@ -24,6 +24,7 @@ import {
 } from '@mantine/core';
 import { LinksGroup } from "./components/Menu/NavBarLinksGroup";
 import { NewPlayer } from "./components/Player/NewPlayer";
+import { SearchModal } from "./components/Search/SearchModal";
 
 const mockdata = [
     /*{
@@ -248,6 +249,7 @@ const App: React.FC = () => {
                             </div>
                         </Group>
                     </div>
+                    <SearchModal />
                 </Header>
             }
         >
