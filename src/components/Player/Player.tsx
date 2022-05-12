@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { createStyles, Card, Image, Avatar, Text, Group, Slider, Stack, Container, Space, Center, LoadingOverlay, Loader } from '@mantine/core';
 import { IPlayerState } from '../../store/player/reducer';
 import { ApplicationState } from '../../type';
@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
 
 }));
 
-export const NewPlayer = () => {
+export const Player = () => {
   const { classes } = useStyles();
 
   const player: IPlayerState = useSelector(

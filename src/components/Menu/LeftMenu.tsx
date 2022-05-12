@@ -1,12 +1,11 @@
 import React from 'react';
 import { createStyles, Navbar } from '@mantine/core';
-import { NewPlayer } from '../Player/NewPlayer';
+import { Player } from '../Player/Player';
 import { IMenuItem, IMenuState } from '../../store/menu/reducer';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../type';
 import { shallowEqual } from 'react-redux';
 import { NavLink, Route, Routes } from 'react-router-dom';
-import { Outlet } from 'tabler-icons-react';
 
 const useStyles = createStyles((theme, _params, getRef) => {
     const icon = getRef('icon');
@@ -97,7 +96,7 @@ export const LeftMenu = () => {
         </Navbar.Section>
   
         <Navbar.Section className={classes.footer}>
-            <NewPlayer />
+            <Player />
         </Navbar.Section>
       </Navbar>
       </>

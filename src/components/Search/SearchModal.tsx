@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Container, Grid, Group, Highlight, Modal, ScrollArea, Table, Tabs, Text, TextInput, Title } from "@mantine/core"
+import { Avatar, Badge, Button, Container, Grid, Highlight, ScrollArea, Table, Text, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/hooks";
 import axios from "axios"
 import { useDispatch } from "react-redux";
@@ -32,7 +32,6 @@ export const SearchModal = () => {
         axios.get(`https://itunes.apple.com/search?term=${searchTerm}&entity=podcast`)
             .then(function (response) {
                 // handle success
-                console.log(response);
                 dispatch(updateSearchResults(response.data.results))
             })
             .catch(function (error) {
@@ -62,7 +61,7 @@ export const SearchModal = () => {
     }
 
     const rows = search.searchResults.map(
-        (result: IPodcastResult) => {
+        (result: IPodcastResult, index: number) => {
 
             const lastPublish = formatDistance(new Date(result.releaseDate), new Date(), { addSuffix: true })
 
@@ -79,7 +78,7 @@ export const SearchModal = () => {
                     </Highlight>
                 </td>
                 <td>
-                    {result.genres.map((tag: string) => <Badge color="grape" radius="lg" variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }} mr={10}>{tag}</Badge>)}
+                    {result.genres.map((tag: string) => <Badge color="grape" radius="lg" variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }} mr={10} key={tag}>{tag}</Badge>)}
                 </td>
                 <td>
                     {result.trackCount}
@@ -90,11 +89,11 @@ export const SearchModal = () => {
 
     return (
         <Container fluid>
-            <Title order={1} mt={10} mb={10}>Cercar Podcasts</Title>
-            <Text mb={20} color={"gray"}>La cerca utilitza el motor de cerca de iTunes</Text>
-            <form onSubmit={form.onSubmit((values) => executeSearch(values.searchTerm))}>
+            <Title order={1} mt={10} mb={10} key={"title"}>Cercar Podcasts</Title>
+            <Text mb={20} color={"gray"} key={"subtitle"}>La cerca utilitza el motor de cerca de iTunes</Text>
+            <form onSubmit={form.onSubmit((values) => executeSearch(values.searchTerm))} key="form">
                 <Grid>
-                    <Grid.Col span={10}>
+                    <Grid.Col span={10} key={"text-input"}>
                         <TextInput
                             size={"lg"}
                             required
@@ -103,7 +102,7 @@ export const SearchModal = () => {
                             style={{ width: "100%" }}
                         />
                     </Grid.Col>
-                    <Grid.Col span={2}>
+                    <Grid.Col span={2} key={"search-button"}>
                         <Button
                             size="lg"
                             type="submit"
