@@ -5,50 +5,18 @@ import { Group, ScrollArea, createStyles, ColorScheme, UnstyledButton, Center } 
 
 
 import {
-    Gauge,
     BrandGithub,
-    Radio,
-    AccessPoint,
-    User
 } from 'tabler-icons-react';
 
 import {
     AppShell,
-    Navbar,
     Header,
     Text,
     MediaQuery,
     Burger,
     useMantineTheme,
 } from '@mantine/core';
-import { SearchModal } from "./components/Search/SearchModal";
 import { LeftMenu, MainMenuRoutes } from "./components/Menu/LeftMenu";
-import { Outlet } from "react-router-dom";
-
-const mockdata = [
-    {
-        label: 'Dashboard',
-        icon: Gauge,
-        initiallyOpened: true,
-        link: '/'
-    },
-    {
-        label: 'Podcasts',
-        icon: AccessPoint,
-        link: '/podcasts',
-        /*links: [
-            { label: 'Visió General', link: '/podcasts', isSelected: true },
-        ],*/
-    },
-    {
-        label: 'Emissores',
-        icon: Radio
-    },
-    {
-        label: 'Autors',
-        icon: User
-    },
-];
 
 const useStyles = createStyles((theme) => ({
     navbar: {
