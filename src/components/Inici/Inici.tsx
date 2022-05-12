@@ -1,8 +1,8 @@
 import * as React from "react"
-import {useEffect} from "react"
-import {shallowEqual, useDispatch, useSelector} from "react-redux"
-import {updateBreadcrumbs} from "../../store/breadcrumbs/actionCreators";
-import {ApplicationState, IArticle} from "../../type";
+import { useEffect } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { updateBreadcrumbs } from "../../store/breadcrumbs/actionCreators";
+import { ApplicationState, IArticle } from "../../type";
 
 const Inici: React.FC = () => {
 
@@ -14,18 +14,15 @@ const Inici: React.FC = () => {
     )
 
     useEffect(() => {
-        // Update the document title using the browser API
         dispatch(updateBreadcrumbs([
-            {name: "Inici"},
+            { name: "Inici" },
         ]))
     });
 
     return (
-        <>
-            <div className="site-layout-background" style={{padding: 24, minHeight: 380}}>
-                <span>Podcasts: {articles.length}</span>
-            </div>
-        </>
+        <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+            <span>Podcasts: {articles.length}</span>
+        </div>
     )
 }
 

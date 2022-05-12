@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { createStyles, Card, Image, Avatar, Text, Group, Slider, Stack, Container, Space, Center, LoadingOverlay, Loader } from '@mantine/core';
 import { IPlayerState } from '../../store/player/reducer';
 import { ApplicationState } from '../../type';
@@ -28,24 +28,7 @@ const useStyles = createStyles((theme) => ({
 
 }));
 
-interface ArticleCardVerticalProps {
-  image: string;
-  category: string;
-  title: string;
-  date: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-}
-
-export const NewPlayer = ({
-  image,
-  category,
-  title,
-  date,
-  author,
-}: ArticleCardVerticalProps) => {
+export const Player = () => {
   const { classes } = useStyles();
 
   const player: IPlayerState = useSelector(
