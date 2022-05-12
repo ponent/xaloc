@@ -1,4 +1,5 @@
 import {Action} from "redux";
+import { IMenuState } from "./store/menu/reducer";
 import {IPlayerState} from "./store/player/reducer";
 import { ISearchState } from "./store/search/reducer";
 
@@ -23,6 +24,7 @@ interface IBreadcrumbState {
 }
 
 type ApplicationState = {
+    menu: IMenuState,
     articles: ArticleState,
     breadcrumbs: IBreadcrumbState,
     player: IPlayerState,

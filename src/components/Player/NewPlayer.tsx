@@ -28,24 +28,7 @@ const useStyles = createStyles((theme) => ({
 
 }));
 
-interface ArticleCardVerticalProps {
-  image: string;
-  category: string;
-  title: string;
-  date: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-}
-
-export const NewPlayer = ({
-  image,
-  category,
-  title,
-  date,
-  author,
-}: ArticleCardVerticalProps) => {
+export const NewPlayer = () => {
   const { classes } = useStyles();
 
   const player: IPlayerState = useSelector(
