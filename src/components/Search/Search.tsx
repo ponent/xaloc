@@ -8,9 +8,9 @@ import { updateSearchResults, updateSearchTerm } from "../../store/search/action
 import { IPodcastResult, ISearchState } from "../../store/search/reducer";
 import { ApplicationState } from "../../type";
 import { formatDistance } from 'date-fns'
-import { Search } from "tabler-icons-react";
+import { Search as SearchIcon } from "tabler-icons-react";
 
-export const SearchModal = () => {
+export const Search = () => {
 
     const dispatch = useDispatch()
 
@@ -43,7 +43,7 @@ export const SearchModal = () => {
             });
     }
 
-    const executeGetEpisodes = (index: number) => {
+    /*const executeGetEpisodes = (index: number) => {
         const url = JSON.parse(JSON.stringify(search.searchResults[index])).feedUrl
         axios.get(`${url}`)
             .then(function (response) {
@@ -58,7 +58,7 @@ export const SearchModal = () => {
             .then(function () {
                 // always executed
             });
-    }
+    }*/
 
     const rows = search.searchResults.map(
         (result: IPodcastResult, index: number) => {
@@ -110,7 +110,7 @@ export const SearchModal = () => {
                             gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}
                             style={{width: '100%'}}
                         >
-                            <Search size={15} />
+                            <SearchIcon size={15} />
                             <Text ml={10}>Cercar</Text>
                         </Button>
                     </Grid.Col>
@@ -118,7 +118,7 @@ export const SearchModal = () => {
             </form>
             <ScrollArea mt={20}>
                 {search.searchTermLastSearch !== "" ? <Text mb={15} color={"gray"}>S'han trobat <b>{search.searchResults.length}</b> resultats per la cerca "<b>{search.searchTermLastSearch}</b>"</Text> : <></>}
-                <Table sx={{ minWidth: 800 }} verticalSpacing="xs" hidden={search.searchResults.length == 0}>
+                <Table sx={{ minWidth: 800 }} verticalSpacing="xs" hidden={search.searchResults.length === 0}>
                     <thead>
                         <tr>
                             <th>Portada</th>

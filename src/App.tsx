@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import "./App.css"
 
-import { Group, ScrollArea, createStyles, ColorScheme, UnstyledButton, Center } from '@mantine/core';
+import { Group, createStyles, UnstyledButton, Center } from '@mantine/core';
 
 
 import {
