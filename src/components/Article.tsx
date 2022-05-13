@@ -22,9 +22,9 @@ export const Article: React.FC<Props> = ({article, removeArticle}) => {
     const play = () => dispatch(playAudio(article.url, article.title, article.icon))
     const pause = () => doStopAudio()
 
-    const PlayButton = player.url == article.url ?
+    const PlayButton = player.url === article.url ?
         (
-            player.playing == true ?
+            player.playing === true ?
                 <Button onClick={pause}>Pausar</Button>
                 :
                 <Button onClick={play}>Començar de nou</Button>

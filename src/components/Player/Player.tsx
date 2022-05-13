@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles, Card, Image, Avatar, Text, Group, Slider, Stack, Container, Space, Center, LoadingOverlay, Loader } from '@mantine/core';
+import { createStyles, Card, Avatar, Text, Group, Slider, Stack, Container, LoadingOverlay, Loader } from '@mantine/core';
 import { IPlayerState } from '../../store/player/reducer';
 import { ApplicationState } from '../../type';
 import { shallowEqual } from 'react-redux';
@@ -36,7 +36,7 @@ export const Player = () => {
     shallowEqual
   )
 
-  const { hovered, ref } = useHover();
+  const { ref } = useHover();
 
   const renderHHMMSSGivenSeconds = (seconds: number) => {
     const date = new Date(0);
@@ -57,14 +57,14 @@ export const Player = () => {
     defaultValue={player.progress}
     value={player.progress}
     min={0}
-    max={player.duration == -1 ? 0 : Math.round(player.duration)}
+    max={player.duration === -1 ? 0 : Math.round(player.duration)}
     ref={ref}
     label={renderHHMMSSGivenSeconds(player.progress)}
     onChange={onChange}
     styles={{
 
     }}
-    disabled={player.duration == -1}
+    disabled={player.duration === -1}
   />
 
   return (
@@ -87,11 +87,11 @@ export const Player = () => {
             </Stack>
             <Stack spacing={0}>
               <Text className={classes.title} mt="xs">
-                {player.duration == -1 ? <Loader variant="bars" size={10} color={"dark"} /> : <></>} {player.title}
+                {player.duration === -1 ? <Loader variant="bars" size={10} color={"dark"} /> : <></>} {player.title}
               </Text>
               <Text size="xs" color="dimmed">
                 {renderHHMMSSGivenSeconds(player.progress)}
-                {player.duration != -1 ? " | " + renderHHMMSSGivenSeconds(player.duration) : ""}
+                {player.duration !== -1 ? " | " + renderHHMMSSGivenSeconds(player.duration) : ""}
               </Text>
             </Stack>
           </Group>

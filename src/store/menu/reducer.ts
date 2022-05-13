@@ -1,10 +1,10 @@
 import {ReduxAction} from "../../type";
-import { AccessPoint, Gauge, Icon, Radio, Search } from "tabler-icons-react";
+import { AccessPoint, Gauge, Icon, Radio, Search as SearchIcon } from "tabler-icons-react";
 import React from "react";
 import Inici from '../../components/Inici/Inici'
 import ArticleList from "../../components/ArticleList";
 import NotImplemented from "../../components/NotImplemented";
-import { SearchModal } from "../../components/Search/SearchModal";
+import { Search } from "../../components/Search/Search";
 
 const menuList: Array<IMenuItem> = [
     {
@@ -27,9 +27,9 @@ const menuList: Array<IMenuItem> = [
     },
     {
         label: 'Cercar',
-        icon: Search,
+        icon: SearchIcon,
         link: '/search',
-        element: SearchModal
+        element: Search
     },
   ]
 
