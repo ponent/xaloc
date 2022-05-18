@@ -3,12 +3,10 @@ import {
     ChangeLoadingAudioAction,
     PlayAudioAction,
     ResumeAudioAction,
-    SetAudioProgressAction,
     StopAudioAction,
     UpdateAudioDurationAction,
     UpdateAudioProgressAction
 } from "./reducer";
-import {DispatchType} from "../../type";
 import {Dispatch} from "redux";
 
 let audio = new Audio();
@@ -53,7 +51,7 @@ export function resumeAudio() : ResumeAudioAction{
 export function updateDuration(duration: number|string) : UpdateAudioDurationAction{
     return {
         type: actionTypes.UPDATE_AUDIO_DURATION,
-        duration: (duration == "Infinity" ? -1 : Number(duration))
+        duration: (duration === "Infinity" ? -1 : Number(duration))
     }
 }
 
@@ -113,12 +111,12 @@ export const doResumeAudio = async () => {
     await audio.play()
 }
 
-const doSetAudioProgress = (action: SetAudioProgressAction) => {
+/*const doSetAudioProgress = (action: SetAudioProgressAction) => {
     return async (dispatch: DispatchType) => {
         audio.currentTime = action.progress
         dispatch(action)
     }
-}
+}*/
 
 export const doStopAudio = () => {
     audio.pause()
