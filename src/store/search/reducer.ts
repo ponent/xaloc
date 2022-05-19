@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionTypes"
-import {ReduxAction} from "../../type";
+import { ReduxAction } from "../../type";
 
 export interface IPodcastResult {
     artistId: number;
@@ -21,6 +21,9 @@ export interface ISearchState {
     searchResultsLoading: boolean;
     searchTerm: string;
     searchTermLastSearch: string;
+    drawerOpen: boolean;
+    drawerContentType: string;
+    drawerContentUrl: string;
 }
 
 const initialState: ISearchState = {
@@ -28,7 +31,10 @@ const initialState: ISearchState = {
     searchResults: [],
     searchResultsLoading: false,
     searchTerm: "",
-    searchTermLastSearch: ""
+    searchTermLastSearch: "",
+    drawerOpen: false,
+    drawerContentUrl: "",
+    drawerContentType: ""
 }
 
 export type UpdateSearchResultsAction = {
@@ -39,6 +45,16 @@ export type UpdateSearchResultsAction = {
 export type UpdateSearchTermAction = {
     type: string,
     searchTerm: string
+}
+
+export type OpenDrawerWithPodcastAction = {
+    type: string,
+    contentType: string,
+    url: string
+}
+
+export type CloseSearchDrawerAction = {
+    type: string
 }
 
 const reducer = (
@@ -61,6 +77,22 @@ const reducer = (
             return {
                 ...state,
                 searchTerm: UpdateSearchTerm.searchTerm,
+            }
+        case actionTypes.SEARCH__OPEN_DRAWER:
+            const OpenDrawerWithPodcast = action as OpenDrawerWithPodcastAction;
+            return {
+                ...state,
+                drawerOpen: true,
+                drawerContentType: OpenDrawerWithPodcast.contentType,
+                drawerContentUrl: OpenDrawerWithPodcast.url
+            }
+        case actionTypes.SEARCH__CLOSE_DRAWER:
+            //const CloseSearchDrawer = action as CloseSearchDrawerAction;
+            return {
+                ...state,
+                drawerOpen: false,
+                drawerContentType: "",
+                drawerContentUrl: ""
             }
     }
     return state

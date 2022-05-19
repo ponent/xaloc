@@ -1,14 +1,15 @@
-import { Avatar, Badge, Button, Container, Grid, Highlight, ScrollArea, Table, Text, TextInput, Title } from "@mantine/core"
+import { Avatar, Badge, Button, Container, Drawer, Grid, Highlight, ScrollArea, Table, Text, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/hooks";
 import axios from "axios"
 import { useDispatch } from "react-redux";
 import { shallowEqual } from "react-redux";
 import { useSelector } from "react-redux";
-import { updateSearchResults, updateSearchTerm } from "../../store/search/actionCreators";
+import { closeSearchDrawer, openDrawerWithPodcast, updateSearchResults, updateSearchTerm } from "../../store/search/actionCreators";
 import { IPodcastResult, ISearchState } from "../../store/search/reducer";
 import { ApplicationState } from "../../type";
 import { formatDistance } from 'date-fns'
-import { Search as SearchIcon } from "tabler-icons-react";
+import { Search as SearchIcon, ActivityHeartbeat as ActivityHeartbeatIcon } from "tabler-icons-react";
+import { SearchDrawer } from "./SearchDrawer";
 
 export const Search = () => {
 
@@ -43,7 +44,7 @@ export const Search = () => {
             });
     }
 
-    /*const executeGetEpisodes = (index: number) => {
+    const executeGetEpisodes = (index: number) => {
         const url = JSON.parse(JSON.stringify(search.searchResults[index])).feedUrl
         axios.get(`${url}`)
             .then(function (response) {
@@ -58,7 +59,7 @@ export const Search = () => {
             .then(function () {
                 // always executed
             });
-    }*/
+    }
 
     const rows = search.searchResults.map(
         (result: IPodcastResult, index: number) => {
@@ -70,12 +71,12 @@ export const Search = () => {
                     <Avatar src={result.artworkUrl100} />
                 </td>
                 <td>
-                    {lastPublish}
-                </td>
-                <td>
                     <Highlight highlight={search.searchTermLastSearch}>
                         {result.trackName}
                     </Highlight>
+                </td>
+                <td>
+                    {lastPublish}
                 </td>
                 <td>
                     {result.genres.map((tag: string) => <Badge color="grape" radius="lg" variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }} mr={10} key={tag}>{tag}</Badge>)}
@@ -83,11 +84,25 @@ export const Search = () => {
                 <td>
                     {result.trackCount}
                 </td>
+                <td>
+                    <Button
+                        size="md"
+                        type="submit"
+                        variant="gradient"
+                        gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}
+                        style={{ width: '100%' }}
+                        onClick={() => dispatch(openDrawerWithPodcast(result.feedUrl))}
+                    >
+                        <ActivityHeartbeatIcon size={15} />
+                        <Text ml={10}>Obrir</Text>
+                    </Button>
+                </td>
             </tr>
         }
     )
 
     return (
+        <>
         <Container fluid>
             <Title order={1} mt={10} mb={10} key={"title"}>Cercar Podcasts</Title>
             <Text mb={20} color={"gray"} key={"subtitle"}>La cerca utilitza el motor de cerca de iTunes</Text>
@@ -108,7 +123,7 @@ export const Search = () => {
                             type="submit"
                             variant="gradient"
                             gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}
-                            style={{width: '100%'}}
+                            style={{ width: '100%' }}
                         >
                             <SearchIcon size={15} />
                             <Text ml={10}>Cercar</Text>
@@ -122,16 +137,18 @@ export const Search = () => {
                     <thead>
                         <tr>
                             <th>Portada</th>
-                            <th>Ultima publicació</th>
                             <th>Nom</th>
+                            <th>Ultima publicació</th>
                             <th>Temes</th>
                             <th>Episodis</th>
+                            <th>Accions</th>
                         </tr>
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
             </ScrollArea>
         </Container>
-
+        <SearchDrawer id={search.drawerContentType} value={search.drawerContentUrl} open={search.drawerOpen} />
+        </>
     )
 }
