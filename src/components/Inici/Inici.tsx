@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { updateBreadcrumbs } from "../../store/breadcrumbs/actionCreators";
 import { ApplicationState, IArticle } from "../../type";
+import { Counter } from "../Counter/Counter";
 
 const Inici: React.FC = () => {
 
@@ -22,6 +23,11 @@ const Inici: React.FC = () => {
     return (
         <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <span>Podcasts: {articles.length}</span>
+
+            <p>---</p>
+
+            <Counter />
+            
         </div>
     )
 }

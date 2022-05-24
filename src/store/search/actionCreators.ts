@@ -57,12 +57,34 @@ type Config = {
     dispatch: AppDispatch;
 };
 
-const thunkSetLoadingAction = createAsyncThunk<any, void, Config>(
+export const thunkSetLoadingAction = createAsyncThunk<any, void, Config>(
     'prefix',
     () => {
         return Promise.resolve([]);
     }
 );
+
+export type MyData = {
+    name: string;
+}
+
+function aaa (name: string, offset: number) {
+    return new Promise<MyData>((resolve) => {
+      // wait 3s before calling fn(par)
+      setTimeout(() => resolve({name: name}), offset)
+    })
+  }
+
+/*export const fetchUserById = createAsyncThunk(
+    'users/fetchById',
+    // Declare the type your function argument here:
+    async (userId: number) => {
+      const response = await aaa(`Hola, ${userId}.`, 2000)
+      // Inferred return type: Promise<MyData>
+      return response as MyData
+    }
+  )*/
+
 
 //export const thunkSetLoadingAction = (loading: boolean): ThunkAction<void, RootState, unknown, SetLoadingDrawerAction> =>
 /*export const thunkSetLoadingAction = (loading: boolean): createAsyncThunk =>

@@ -2,8 +2,10 @@ import { Button, Drawer, LoadingOverlay } from "@mantine/core"
 import { useDispatch } from "react-redux";
 import { shallowEqual } from "react-redux";
 import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { store } from "../../store";
-import { closeSearchDrawer, thunkSetLoadingAction } from "../../store/search/actionCreators";
+import { fetchUserById } from "../../store/counter/counterSlice";
+import { closeSearchDrawer } from "../../store/search/actionCreators";
 import { ISearchState } from "../../store/search/reducer";
 import { ApplicationState } from "../../type";
 
@@ -15,9 +17,9 @@ export type DrawerContent = {
 
 export const SearchDrawer = ({id, value, open}: DrawerContent) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch()
 
-    const search: ISearchState = useSelector(
+    const search: ISearchState = useAppSelector(
         (state: ApplicationState) => state.search,
         shallowEqual
     )
@@ -32,9 +34,7 @@ export const SearchDrawer = ({id, value, open}: DrawerContent) => {
             position="right"
         >
             <LoadingOverlay visible={false} />
-            <Button onClick={() => store.dispatch(thunkSetLoadingAction())}>Press me!</Button>
-            {/*<p>{search.drawerContentUrl}</p>
-            <p>{search.drawerContentType}</p>*/}
+            <Button onClick={() => dispatch(fetchUserById(2))}>Press me!</Button>
             <pre>{value}</pre>
         </Drawer>
     )
