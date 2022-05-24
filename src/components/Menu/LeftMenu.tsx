@@ -87,7 +87,7 @@ export const LeftMenu = () => {
             to={item.link}
           >
             <Icon className={classes.linkIcon} />
-            <span>{item.label} ({item.icon})</span>
+            <span>{item.label}</span>
           </NavLink>
     });
   

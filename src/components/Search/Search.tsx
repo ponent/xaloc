@@ -1,19 +1,18 @@
-import { Avatar, Badge, Button, Container, Drawer, Grid, Highlight, ScrollArea, Table, Text, TextInput, Title } from "@mantine/core"
+import { Avatar, Badge, Button, Card, Container, Drawer, Grid, Highlight, LoadingOverlay, ScrollArea, Table, Text, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/hooks";
 import axios from "axios"
-import { useDispatch } from "react-redux";
 import { shallowEqual } from "react-redux";
 import { useSelector } from "react-redux";
-import { closeSearchDrawer, openDrawerWithPodcast, updateSearchResults, updateSearchTerm } from "../../store/search/actionCreators";
-import { IPodcastResult, ISearchState } from "../../store/search/reducer";
+import { closeDrawer, executePodcastSearch, executeSearch, IPodcastResult, ISearchState, PodcastEpisode } from "../../store/search/reducer";
 import { ApplicationState } from "../../type";
 import { formatDistance } from 'date-fns'
 import { Search as SearchIcon, ActivityHeartbeat as ActivityHeartbeatIcon } from "tabler-icons-react";
-import { SearchDrawer } from "./SearchDrawer";
+import { useAppDispatch } from "../../hooks";
+import { playAudio } from "../../store/player/actionCreators";
 
 export const Search = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const search: ISearchState = useSelector(
         (state: ApplicationState) => state.search,
@@ -24,25 +23,8 @@ export const Search = () => {
         initialValues: {
             searchTerm: search.searchTerm
         },
-
         validationRules: {}
     });
-
-    const executeSearch = (searchTerm: string) => {
-        dispatch(updateSearchTerm(searchTerm))
-        axios.get(`https://itunes.apple.com/search?term=${searchTerm}&entity=podcast`)
-            .then(function (response) {
-                // handle success
-                dispatch(updateSearchResults(response.data.results))
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-    }
 
     const executeGetEpisodes = (index: number) => {
         const url = JSON.parse(JSON.stringify(search.searchResults[index])).feedUrl
@@ -61,7 +43,7 @@ export const Search = () => {
             });
     }
 
-    const rows = search.searchResults.map(
+    const rows = (search.searchResults === undefined) ? <></> : search.searchResults.map(
         (result: IPodcastResult, index: number) => {
 
             const lastPublish = formatDistance(new Date(result.releaseDate), new Date(), { addSuffix: true })
@@ -91,7 +73,7 @@ export const Search = () => {
                         variant="gradient"
                         gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}
                         style={{ width: '100%' }}
-                        onClick={() => dispatch(openDrawerWithPodcast(result.feedUrl))}
+                        onClick={() => dispatch(executePodcastSearch(result))}
                     >
                         <ActivityHeartbeatIcon size={15} />
                         <Text ml={10}>Obrir</Text>
@@ -106,7 +88,7 @@ export const Search = () => {
         <Container fluid>
             <Title order={1} mt={10} mb={10} key={"title"}>Cercar Podcasts</Title>
             <Text mb={20} color={"gray"} key={"subtitle"}>La cerca utilitza el motor de cerca de iTunes</Text>
-            <form onSubmit={form.onSubmit((values) => executeSearch(values.searchTerm))} key="form">
+            <form onSubmit={form.onSubmit((values) => dispatch(executeSearch(values.searchTerm)))} key="form">
                 <Grid>
                     <Grid.Col span={10} key={"text-input"}>
                         <TextInput
@@ -148,7 +130,26 @@ export const Search = () => {
                 </Table>
             </ScrollArea>
         </Container>
-        <SearchDrawer id={search.drawerContentType} value={search.drawerContentUrl} open={search.drawerOpen} />
+
+        <Drawer
+            opened={search.drawerOpen}
+            onClose={() => dispatch(closeDrawer())}
+            title={search.drawerContentUrl}
+            padding="xl"
+            size="xl"
+            position="right"
+        >
+            <LoadingOverlay visible={search.drawerLoading} />
+            <>
+            {(search.drawerContent !== undefined) ? search.drawerContent.map((episode: PodcastEpisode) => {
+                return <Card title={episode.trackName} key={episode.trackId}>
+                    <p>{episode.trackName}</p>
+                    <Button onClick={() => dispatch(playAudio(episode.episodeUrl, episode.trackName, episode.artworkUrl600))}>Play</Button>
+                </Card>
+            }) : <></>}
+            </>
+        </Drawer>
+
         </>
     )
 }

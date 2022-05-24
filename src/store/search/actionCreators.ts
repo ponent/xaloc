@@ -1,21 +1,10 @@
-import { Action, AnyAction } from "redux";
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { AnyAction } from "redux";
 import * as actionTypes from "./actionTypes"
 import {
     CloseSearchDrawerAction,
-    IPodcastResult,
     OpenDrawerWithPodcastAction,
-    UpdateSearchResultsAction,
     UpdateSearchTermAction
 } from "./reducer";
-import { store } from "../../store";
-
-export function updateSearchResults(results: Array<IPodcastResult>): UpdateSearchResultsAction {
-    return {
-        type: actionTypes.SEARCH__UPDATE_RESULTS,
-        searchResults: results
-    }
-}
 
 export function updateSearchTerm(searchTerm: string): UpdateSearchTermAction {
     return {
@@ -43,55 +32,8 @@ export interface SetLoadingDrawerAction extends AnyAction {
 }
 
 export function setLoadingAction(loading: boolean): SetLoadingDrawerAction {
-    alert("BBB!")
     return {
         type: actionTypes.SEARCH__CLOSE_DRAWER,
         loading: loading
     }
 }
-
-type StoreType = typeof store;
-type AppDispatch = StoreType['dispatch'];
-
-type Config = {
-    dispatch: AppDispatch;
-};
-
-export const thunkSetLoadingAction = createAsyncThunk<any, void, Config>(
-    'prefix',
-    () => {
-        return Promise.resolve([]);
-    }
-);
-
-export type MyData = {
-    name: string;
-}
-
-function aaa (name: string, offset: number) {
-    return new Promise<MyData>((resolve) => {
-      // wait 3s before calling fn(par)
-      setTimeout(() => resolve({name: name}), offset)
-    })
-  }
-
-/*export const fetchUserById = createAsyncThunk(
-    'users/fetchById',
-    // Declare the type your function argument here:
-    async (userId: number) => {
-      const response = await aaa(`Hola, ${userId}.`, 2000)
-      // Inferred return type: Promise<MyData>
-      return response as MyData
-    }
-  )*/
-
-
-//export const thunkSetLoadingAction = (loading: boolean): ThunkAction<void, RootState, unknown, SetLoadingDrawerAction> =>
-/*export const thunkSetLoadingAction = (loading: boolean): createAsyncThunk =>
-  async dispatch => {
-      alert("AAA!")
-    //const asyncResp = await exampleAPI()
-    dispatch(
-      setLoadingAction(loading)
-    )
-  }*/

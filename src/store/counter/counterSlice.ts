@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import { readdirSync } from 'fs';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import type { RootState } from '../../store'
 
 // Define a type for the slice state
