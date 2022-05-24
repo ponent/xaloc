@@ -4,6 +4,8 @@ import reportWebVitals from './reportWebVitals';
 import App from "./App"
 import {BrowserRouter} from "react-router-dom";
 import { store } from "./store";
+import { useDispatch } from "react-redux";
+import thunk, { ThunkDispatch } from 'redux-thunk';
 
 const rootElement = document.getElementById("root")
 render(
@@ -14,6 +16,9 @@ render(
     </Provider>,
     rootElement
 )
+
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch = () => useDispatch<AppDispatch>()
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
