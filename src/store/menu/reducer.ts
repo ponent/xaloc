@@ -1,5 +1,4 @@
 import {ReduxAction} from "../../type";
-import { AccessPoint, Gauge, Icon, Radio, Search as SearchIcon } from "tabler-icons-react";
 import React from "react";
 import Inici from '../../components/Inici/Inici'
 import ArticleList from "../../components/ArticleList";
@@ -9,25 +8,25 @@ import { Search } from "../../components/Search/Search";
 const menuList: Array<IMenuItem> = [
     {
         label: 'Dashboard',
-        icon: Gauge,
+        icon: 'Gauge',
         link: '/',
         element: Inici
     },
     {
         label: 'Podcasts',
-        icon: AccessPoint,
+        icon: 'AccessPoint',
         link: '/podcasts',
         element: ArticleList
     },
     {
         label: 'Emissores',
-        icon: Radio,
+        icon: 'Radio',
         link: '/emissores',
         element: NotImplemented
     },
     {
         label: 'Cercar',
-        icon: SearchIcon,
+        icon: 'Search',
         link: '/search',
         element: Search
     },
@@ -35,7 +34,7 @@ const menuList: Array<IMenuItem> = [
 
 export interface IMenuItem {
     label: string;
-    icon: Icon;
+    icon: string;
     link: string;
     submenus?: Array<IMenuItem>;
     element: React.FC;
