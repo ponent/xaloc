@@ -4,7 +4,6 @@ import breadcrumbsReducer from './store/breadcrumbs/reducer'
 import playerReducer from './store/player/reducer'
 import searchReducer from './store/search/reducer'
 import menuReducer from './store/menu/reducer'
-import counterSlice from './store/counter/counterSlice'
 
 
 export const store = configureStore({
@@ -14,7 +13,6 @@ export const store = configureStore({
         breadcrumbs: breadcrumbsReducer,
         player: playerReducer,
         search: searchReducer,
-        counter: counterSlice
     },
     devTools: true,
 })
