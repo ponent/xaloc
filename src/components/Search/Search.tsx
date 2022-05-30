@@ -9,6 +9,7 @@ import { formatDistance } from 'date-fns'
 import { Search as SearchIcon, ActivityHeartbeat as ActivityHeartbeatIcon } from "tabler-icons-react";
 import { useAppDispatch } from "../../hooks";
 import { playAudio } from "../../store/player/actionCreators";
+import { PodcastResult } from "./PodcastResult";
 
 export const Search = () => {
 
@@ -143,8 +144,9 @@ export const Search = () => {
             <>
             {(search.drawerContent !== undefined) ? search.drawerContent.map((episode: PodcastEpisode) => {
                 return <Card title={episode.trackName} key={episode.trackId}>
-                    <p>{episode.trackName}</p>
-                    <Button onClick={() => dispatch(playAudio(episode.episodeUrl, episode.trackName, episode.artworkUrl600))}>Play</Button>
+                    {/*<p>{episode.trackName}</p>
+                    <Button onClick={() => dispatch(playAudio(episode.episodeUrl, episode.trackName, episode.artworkUrl600))}>Play</Button>*/}
+                    <PodcastResult episode={episode} />
                 </Card>
             }) : <></>}
             </>
