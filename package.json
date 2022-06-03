@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@headlessui/react": "^1.6.1",
     "@mantine/core": "^4.2.2",
     "@mantine/hooks": "^4.2.2",
     "@reduxjs/toolkit": "^1.8.2",
