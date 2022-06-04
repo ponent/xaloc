@@ -1,6 +1,5 @@
 import { Avatar, Badge, Button, Card, Container, Drawer, Grid, Highlight, LoadingOverlay, ScrollArea, Table, Text, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/hooks";
-import axios from "axios"
 import { shallowEqual } from "react-redux";
 import { useSelector } from "react-redux";
 import { closeDrawer, executePodcastSearch, executeSearch, IPodcastResult, ISearchState, PodcastEpisode } from "../../store/search/reducer";
@@ -8,7 +7,6 @@ import { ApplicationState } from "../../type";
 import { formatDistance } from 'date-fns'
 import { Search as SearchIcon, ActivityHeartbeat as ActivityHeartbeatIcon } from "tabler-icons-react";
 import { useAppDispatch } from "../../hooks";
-import { playAudio } from "../../store/player/actionCreators";
 import { PodcastResult } from "./PodcastResult";
 
 export const Search = () => {
@@ -26,23 +24,6 @@ export const Search = () => {
         },
         validationRules: {}
     });
-
-    const executeGetEpisodes = (index: number) => {
-        const url = JSON.parse(JSON.stringify(search.searchResults[index])).feedUrl
-        axios.get(`${url}`)
-            .then(function (response) {
-                // handle success
-                console.log(response);
-
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-    }
 
     const rows = (search.searchResults === undefined) ? <></> : search.searchResults.map(
         (result: IPodcastResult, index: number) => {

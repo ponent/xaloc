@@ -1,9 +1,5 @@
-import * as actionTypes from "./actionTypes"
-import { ReduxAction } from "../../type";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { updateExternalModuleReference } from "typescript";
 
 export interface IPodcastResult {
     artistId: number;
@@ -65,7 +61,7 @@ export type CloseSearchDrawerAction = {
     type: string
 }
 
-const reducer = (
+/*const reducer = (
     state: ISearchState = initialState,
     action: ReduxAction
 ): ISearchState => {
@@ -76,25 +72,9 @@ const reducer = (
                 ...state,
                 searchTerm: UpdateSearchTerm.searchTerm,
             }
-        /*case actionTypes.SEARCH__OPEN_DRAWER:
-            const OpenDrawerWithPodcast = action as OpenDrawerWithPodcastAction;
-            return {
-                ...state,
-                drawerOpen: true,
-                drawerContentType: OpenDrawerWithPodcast.contentType,
-                drawerContentUrl: OpenDrawerWithPodcast.url
-            }*/
-        case actionTypes.SEARCH__CLOSE_DRAWER:
-            //const CloseSearchDrawer = action as CloseSearchDrawerAction;
-            return {
-                ...state,
-                drawerOpen: false,
-                drawerContentType: "",
-                drawerContentUrl: ""
-            }
     }
     return state
-}
+}*/
 
 export const executeSearch = createAsyncThunk(
     'podcasts/search',

@@ -4,8 +4,6 @@ import reportWebVitals from './reportWebVitals';
 import App from "./App"
 import {BrowserRouter} from "react-router-dom";
 import { store } from "./store";
-import { useDispatch } from "react-redux";
-import thunk, { ThunkDispatch } from 'redux-thunk';
 
 const rootElement = document.getElementById("root")
 render(
