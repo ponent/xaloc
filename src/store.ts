@@ -4,7 +4,6 @@ import breadcrumbsReducer from './store/breadcrumbs/reducer'
 import playerReducer from './store/player/reducer'
 import searchReducer from './store/search/reducer'
 import menuReducer from './store/menu/reducer'
-import thunk from "redux-thunk"
 
 
 export const store = configureStore({
@@ -13,10 +12,9 @@ export const store = configureStore({
         articles: articleReducer,
         breadcrumbs: breadcrumbsReducer,
         player: playerReducer,
-        search: searchReducer
+        search: searchReducer,
     },
     devTools: true,
-    middleware: [thunk],
 })
 
 export type RootState = ReturnType<typeof store.getState>

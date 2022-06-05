@@ -67,6 +67,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
   });
 
 
+
 export const LeftMenu = () => {
     
     const { classes, cx } = useStyles();
@@ -76,17 +77,19 @@ export const LeftMenu = () => {
         (state: ApplicationState) => state.menu,
         shallowEqual
     )
-  
-    const links = menu.menuList.map((item: IMenuItem) => (
-        <NavLink
+    
+    
+    const links = menu.menuList.map((item: IMenuItem) => {
+      const Icon = require("tabler-icons-react")[item.icon]
+        return <NavLink
             className={({ isActive }) => cx(classes.link, { [classes.linkActive]: isActive }) }
             key={item.label}
             to={item.link}
           >
-            <item.icon className={classes.linkIcon} />
+            <Icon className={classes.linkIcon} />
             <span>{item.label}</span>
           </NavLink>
-    ));
+    });
   
     return (
         <>

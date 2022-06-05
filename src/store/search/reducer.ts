@@ -1,5 +1,5 @@
-import * as actionTypes from "./actionTypes"
-import {ReduxAction} from "../../type";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export interface IPodcastResult {
     artistId: number;
@@ -21,6 +21,11 @@ export interface ISearchState {
     searchResultsLoading: boolean;
     searchTerm: string;
     searchTermLastSearch: string;
+    drawerOpen: boolean;
+    drawerLoading: boolean;
+    drawerContentType: string;
+    drawerContentUrl: string;
+    drawerContent: Array<PodcastEpisode>;
 }
 
 const initialState: ISearchState = {
@@ -28,7 +33,12 @@ const initialState: ISearchState = {
     searchResults: [],
     searchResultsLoading: false,
     searchTerm: "",
-    searchTermLastSearch: ""
+    searchTermLastSearch: "",
+    drawerOpen: false,
+    drawerLoading: false,
+    drawerContentUrl: "",
+    drawerContentType: "",
+    drawerContent: []
 }
 
 export type UpdateSearchResultsAction = {
@@ -41,21 +51,21 @@ export type UpdateSearchTermAction = {
     searchTerm: string
 }
 
-const reducer = (
+export type OpenDrawerWithPodcastAction = {
+    type: string,
+    contentType: string,
+    url: string
+}
+
+export type CloseSearchDrawerAction = {
+    type: string
+}
+
+/*const reducer = (
     state: ISearchState = initialState,
     action: ReduxAction
 ): ISearchState => {
     switch (action.type) {
-        case actionTypes.SEARCH__UPDATE_RESULTS:
-            const UpdateSearchResults = action as UpdateSearchResultsAction;
-            return {
-                ...state,
-                searchResults: UpdateSearchResults.searchResults.sort((a: IPodcastResult, b: IPodcastResult) => (
-                    (new Date(b.releaseDate).getTime()) - (new Date(a.releaseDate).getTime())
-                )),
-                searchResultsLoading: false,
-                searchTermLastSearch: state.searchTerm
-            }
         case actionTypes.SEARCH__UPDATE_SEARCH_TERM:
             const UpdateSearchTerm = action as UpdateSearchTermAction;
             return {
@@ -64,6 +74,109 @@ const reducer = (
             }
     }
     return state
+}*/
+
+export const executeSearch = createAsyncThunk(
+    'podcasts/search',
+    async (searchTerm: string, { dispatch }) => {
+        const results = await axios.get(`https://itunes.apple.com/search?term=${searchTerm}&entity=podcast`)
+        return { results: results.data.results, searchTerm: searchTerm } as { results: Array<IPodcastResult>; searchTerm: string; }
+    }
+)
+
+export interface PodcastEpisode {
+    trackId: number;
+    episodeUrl: string;
+    trackName: string;
+    releaseDate: string;
+    description: string;
+    trackTimeMillis: number;
+    artworkUrl600: string;
 }
 
-export default reducer
+export const executePodcastSearch = createAsyncThunk(
+    'podcasts/details',
+    async (podcast: IPodcastResult, {dispatch}) => {
+        dispatch(openDrawer())
+        //const results = await axios.get(podcast.feedUrl)
+        const results = await axios.get(`https://itunes.apple.com/lookup?id=${podcast.trackId}&media=podcast&entity=podcastEpisode&limit=100`)
+        const parsedResults = results.data.results as Array<PodcastEpisode>
+        console.log(parsedResults)
+        return parsedResults.slice(1) // We remove the first element because iTunes gives information about the podcast but is not an episode
+    }
+  )
+
+export const searchSlice = createSlice({
+    name: 'search',
+    // `createSlice` will infer the state type from the `initialState` argument
+    initialState,
+    reducers: {
+        openDrawer: (state: ISearchState) => {
+            return {
+                ...state,
+                drawerOpen: true,
+                drawerLoading: true
+            }
+          },
+          closeDrawer: (state: ISearchState) => {
+            return {
+                ...state,
+                drawerOpen: false,
+                drawerContent: []
+            }
+          },
+        /*updateSearchResults: (state: ISearchState, action: PayloadAction<Array<IPodcastResult>>) => {
+            return {
+                ...state,
+                searchResults: action.payload.sort((a: IPodcastResult, b: IPodcastResult) => (
+                    (new Date(b.releaseDate).getTime()) - (new Date(a.releaseDate).getTime())
+                )),
+                searchResultsLoading: false,
+                searchTermLastSearch: state.searchTerm
+            }
+        }*/
+        /*increment: (state) => {
+          state.value += 1
+        },
+        setLoading: (state, action: PayloadAction<boolean>) => {
+          state.loading = action.payload
+        },
+        decrement: (state) => {
+          state.value -= 1
+        },
+        // Use the PayloadAction type to declare the contents of `action.payload`
+        incrementByAmount: (state, action: PayloadAction<number>) => {
+          state.value += action.payload
+        },*/
+    },
+    extraReducers: (builder) => {
+        /*// Add reducers for additional action types here, and handle loading state as needed
+        builder.addCase(fetchUserById.fulfilled, (state, action) => {
+          // Add user to the state array
+          state.user = action.payload
+          state.loading = false
+        })*/
+        builder.addCase(executeSearch.fulfilled, (state, action) => {
+            // Add user to the state array
+            state.searchResults = action.payload.results
+            .sort((a: IPodcastResult, b: IPodcastResult) => (
+                (new Date(b.releaseDate).getTime()) - (new Date(a.releaseDate).getTime())
+            ))
+            .map((podcast: IPodcastResult) => ({...podcast, feedUrl: podcast.feedUrl.replace('http://','https://')}))
+            state.searchResultsLoading = false
+            state.searchTermLastSearch = action.payload.searchTerm
+            //state.loading = false
+        })
+        builder.addCase(executePodcastSearch.fulfilled, (state, action) => {
+            console.log("----")
+            console.log(action.payload)
+            // Add user to the state array
+            state.drawerContent = action.payload
+            state.drawerLoading = false
+        })
+    },
+})
+
+export const { openDrawer, closeDrawer } = searchSlice.actions
+
+export default searchSlice.reducer
