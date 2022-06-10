@@ -57,7 +57,7 @@ export function PodcastResult({episode} : CardWithStatsProps) {
         </Text>
         <Group spacing={5}>
           <Text size="xs" color="dimmed">
-            {renderHHMMSSGivenSeconds(episode.trackTimeMillis)}
+            {renderHHMMSSGivenSeconds(episode.trackTimeMillis/1000)}
           </Text>
           <RingProgress size={18} sections={[{ value: 80, color: 'blue' }]} />
         </Group>
