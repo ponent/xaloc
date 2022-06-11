@@ -10,9 +10,32 @@ export interface IPodcastResult {
     trackName: string;
     feedUrl: string;
     artworkUrl100: string;
+    artworkUrl600: string;
     releaseDate: string;
     genres: Array<string>;
     trackCount: number;
+}
+
+const EmptyIPodcastResult = () : IPodcastResult => (
+    {
+        artistId: 0,
+        artistName: "",
+        artworkUrl100: "",
+        artworkUrl600: "",
+        collectionId: 0,
+        feedUrl: "",
+        genres: [],
+        kind: "",
+        releaseDate: "",
+        trackCount: 0,
+        trackId: 0,
+        trackName: ""
+    }
+)
+
+export interface PodcastDetail {
+    info: IPodcastResult;
+    podcasts: Array<PodcastEpisode>;
 }
 
 export interface ISearchState {
@@ -22,10 +45,8 @@ export interface ISearchState {
     searchTerm: string;
     searchTermLastSearch: string;
     drawerOpen: boolean;
-    drawerLoading: boolean;
-    drawerContentType: string;
-    drawerContentUrl: string;
-    drawerContent: Array<PodcastEpisode>;
+    podcastDetailLoading: boolean;
+    podcastDetailResults: PodcastDetail;
 }
 
 const initialState: ISearchState = {
@@ -35,10 +56,11 @@ const initialState: ISearchState = {
     searchTerm: "",
     searchTermLastSearch: "",
     drawerOpen: false,
-    drawerLoading: false,
-    drawerContentUrl: "",
-    drawerContentType: "",
-    drawerContent: []
+    podcastDetailLoading: false,
+    podcastDetailResults: {
+        info: EmptyIPodcastResult(), 
+        podcasts: []
+    }
 }
 
 export type UpdateSearchResultsAction = {
@@ -96,13 +118,16 @@ export interface PodcastEpisode {
 
 export const executePodcastSearch = createAsyncThunk(
     'podcasts/details',
-    async (podcast: IPodcastResult, {dispatch}) => {
-        dispatch(openDrawer())
+    async (trackId: string/*, {dispatch}*/) : Promise<PodcastDetail> => {
+        //dispatch(openDrawer()) // I don't delete that to have an example on how to dispatch actions from thunks
         //const results = await axios.get(podcast.feedUrl)
-        const results = await axios.get(`https://itunes.apple.com/lookup?id=${podcast.trackId}&media=podcast&entity=podcastEpisode&limit=100`)
-        const parsedResults = results.data.results as Array<PodcastEpisode>
-        console.log(parsedResults)
-        return parsedResults.slice(1) // We remove the first element because iTunes gives information about the podcast but is not an episode
+        const results = await axios.get(`https://itunes.apple.com/lookup?id=${trackId}&media=podcast&entity=podcastEpisode&limit=100`)
+        const podcastInfo = results.data.results.slice(0, 1)[0] as IPodcastResult
+        const parsedResults = results.data.results.slice(1) as Array<PodcastEpisode>
+        return {
+             info: podcastInfo,
+             podcasts: parsedResults
+        } //.slice(1) // We remove the first element because iTunes gives information about the podcast but is not an episode
     }
   )
 
@@ -115,14 +140,17 @@ export const searchSlice = createSlice({
             return {
                 ...state,
                 drawerOpen: true,
-                drawerLoading: true
+                podcastDetailLoading: true
             }
           },
           closeDrawer: (state: ISearchState) => {
             return {
                 ...state,
                 drawerOpen: false,
-                drawerContent: []
+                podcastDetailResults: {
+                    info: EmptyIPodcastResult(),
+                    podcasts: []
+                }
             }
           },
         /*updateSearchResults: (state: ISearchState, action: PayloadAction<Array<IPodcastResult>>) => {
@@ -168,11 +196,12 @@ export const searchSlice = createSlice({
             //state.loading = false
         })
         builder.addCase(executePodcastSearch.fulfilled, (state, action) => {
-            console.log("----")
-            console.log(action.payload)
             // Add user to the state array
-            state.drawerContent = action.payload
-            state.drawerLoading = false
+            state.podcastDetailResults = action.payload
+            state.podcastDetailLoading = false
+        })
+        builder.addCase(executePodcastSearch.pending, (state, action) => {
+            state.podcastDetailLoading = true
         })
     },
 })
