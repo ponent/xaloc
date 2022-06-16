@@ -1,9 +1,9 @@
 import {ReduxAction} from "../../type";
-import React from "react";
 import Inici from '../../components/Inici/Inici'
-import ArticleList from "../../components/ArticleList";
 import NotImplemented from "../../components/NotImplemented";
 import { Search } from "../../components/Search/Search";
+import { SearchResultDetail } from "../../components/Search/SearchResultDetail";
+import { SearchResults } from "../../components/Search/SearchResults";
 
 const menuList: Array<IMenuItem> = [
     {
@@ -16,7 +16,7 @@ const menuList: Array<IMenuItem> = [
         label: 'Podcasts',
         icon: 'AccessPoint',
         link: '/podcasts',
-        element: ArticleList
+        element: NotImplemented
     },
     {
         label: 'Emissores',
@@ -28,7 +28,21 @@ const menuList: Array<IMenuItem> = [
         label: 'Cercar',
         icon: 'Search',
         link: '/search',
-        element: Search
+        element: Search,
+        submenus: [
+            {
+                label: 'Resultats',
+                icon: 'Search',
+                link: '',
+                element: SearchResults
+            },
+            {
+                label: 'Resultat de cerca',
+                icon: 'Search',
+                link: ':podcastId',
+                element: SearchResultDetail
+            },
+        ]
     },
   ]
 
@@ -37,7 +51,7 @@ export interface IMenuItem {
     icon: string;
     link: string;
     submenus?: Array<IMenuItem>;
-    element: React.FC;
+    element: any;
 }
 
 export interface IMenuState {
