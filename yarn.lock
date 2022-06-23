@@ -8670,10 +8670,10 @@ symbol-tree@^3.2.4:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
-tabler-icons-react@^1.50.0:
-  version "1.50.0"
-  resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.50.0.tgz#6876f3ee0848fccee2a30e90154583f592a19869"
-  integrity sha512-2+vH9yQNQu95l7bnNm016OeD2SCnJIzOhT00Os1Cp7mKoLMlcV3AGLzvtNPdeUa+vKZyd4EGmXemyaluiMvD4g==
+tabler-icons-react@^1.51.0:
+  version "1.51.0"
+  resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.51.0.tgz#cbba4f8003e4c344361b351b513e73d1bbd35a7e"
+  integrity sha512-N6ws6GIa0L9OSylS81DrJECb7+QcW84to09V956QwnsNSBmCsWYuWWiI6FqHg7Gd5TsvfFBgKiw1Iw69Ti12Og==
 
 tailwindcss@^3.0.2:
   version "3.0.24"
