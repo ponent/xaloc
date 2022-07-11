@@ -3,16 +3,17 @@ import articleReducer from './store/reducer'
 import breadcrumbsReducer from './store/breadcrumbs/reducer'
 import playerReducer from './store/player/reducer'
 import searchReducer from './store/search/reducer'
-import menuReducer from './store/menu/reducer'
-
+import subscriptionReducer from './store/subscriptions/reducer'
+import settingsReducer from './store/settings/reducer'
 
 export const store = configureStore({
     reducer: {
-        menu: menuReducer,
         articles: articleReducer,
         breadcrumbs: breadcrumbsReducer,
         player: playerReducer,
         search: searchReducer,
+        subscriptions: subscriptionReducer,
+        settings: settingsReducer
     },
     devTools: true,
 })

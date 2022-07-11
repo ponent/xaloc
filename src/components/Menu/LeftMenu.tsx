@@ -1,11 +1,87 @@
 import React from 'react';
-import { createStyles, Navbar } from '@mantine/core';
+import { Badge, createStyles, Group, Indicator, Navbar, Text, useMantineTheme } from '@mantine/core';
 import { Player } from '../Player/Player';
-import { IMenuItem, IMenuState } from '../../store/menu/reducer';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../type';
 import { shallowEqual } from 'react-redux';
 import { NavLink, Route, Routes } from 'react-router-dom';
+import NotImplemented from '../NotImplemented';
+import { PodcastsIndex } from '../Podcasts/PodcastsIndex';
+import { MyPodcasts } from '../Podcasts/MyPodcasts';
+import { PodcastDetail } from '../Podcasts/PodcastDetail';
+import { Search } from '../Search/Search';
+import { SearchResults } from '../Search/SearchResults';
+import { SearchResultDetail } from '../Search/SearchResultDetail';
+import { SettingsIndex } from '../Settings/SettingsIndex';
+
+interface IMenuItem {
+  label: any;
+  icon: string;
+  link: string;
+  submenus?: Array<IMenuItem>;
+  element: any;
+}
+
+const menuList: Array<IMenuItem> = [
+  {
+    label: 'Dashboard',
+    icon: 'Radio',
+    link: '/',
+    element: NotImplemented
+  },
+  {
+    label: 'Els meus Podcasts',
+    icon: 'AccessPoint',
+    link: '/podcasts',
+    element: PodcastsIndex,
+    submenus: [
+      {
+        label: 'My Podcasts',
+        icon: 'Search',
+        link: '',
+        element: MyPodcasts
+      },
+      {
+        label: 'Podcast Detail',
+        icon: 'Search',
+        link: ':platform/:podcastId',
+        element: PodcastDetail
+      },
+    ]
+  },
+  {
+    label: 'Emissores',
+    icon: 'Radio',
+    link: '/emissores',
+    element: NotImplemented
+  },
+  {
+    label: 'Cercar',
+    icon: 'Search',
+    link: '/cercar',
+    element: Search,
+    submenus: [
+      {
+        label: 'Resultats',
+        icon: 'Search',
+        link: '',
+        element: SearchResults
+      },
+      {
+        label: 'Resultat de cerca',
+        icon: 'Search',
+        link: ':podcastId',
+        element: SearchResultDetail
+      },
+    ]
+  },
+  {
+    label: 'Ajustos',
+    icon: 'Settings',
+    link: '/ajustos',
+    element: SettingsIndex
+  },
+]
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef('icon');
@@ -71,22 +147,15 @@ export const LeftMenu = () => {
 
   const { classes, cx } = useStyles();
 
-
-  const menu: IMenuState = useSelector(
-    (state: ApplicationState) => state.menu,
-    shallowEqual
-  )
-
-
-  const links = menu.menuList.map((item: IMenuItem) => {
+  const links = menuList.map((item: IMenuItem) => {
     const Icon = require("tabler-icons-react")[item.icon]
     return <NavLink
       className={({ isActive }) => cx(classes.link, { [classes.linkActive]: isActive })}
       key={item.label}
       to={item.link}
     >
-      <Icon className={classes.linkIcon} />
-      <span>{item.label}</span>
+        <Icon className={classes.linkIcon} />
+        <Text>{item.label}</Text>
     </NavLink>
   });
 
@@ -114,14 +183,7 @@ const GenerateMenu = (menu: IMenuItem, parent?: IMenuItem) => (
 )
 
 export const MainMenuRoutes = () => {
-
-  const menu: IMenuState = useSelector(
-    (state: ApplicationState) => state.menu,
-    shallowEqual
-  )
-
   return <Routes>
-    ...{menu !== undefined ? menu.menuList.map((menu: IMenuItem) => GenerateMenu(menu)) : <></>}
+    ...{menuList !== undefined ? menuList.map((menu: IMenuItem) => GenerateMenu(menu)) : <></>}
   </Routes>
-
 }
