@@ -8,16 +8,18 @@ import { ArrowBarLeft, Bookmark } from "tabler-icons-react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { executePodcastSearch, IPodcastResult, ISearchState, PodcastEpisode } from "../../store/search/reducer";
 import { ApplicationState } from "../../type";
-import { PodcastResult } from "./PodcastResult";
 import { ca } from 'date-fns/locale'
 import { addSubscription, ISubscriptionsState, removeSubscription } from "../../store/subscriptions/reducer";
+import { PodcastResult } from "../Search/PodcastResult";
 
-export const SearchResultDetail = () => {
+export const PodcastDetail = () => {
+
+
 
     const params = useParams();
 
+    const platform = params.platform ?? ""
     const podcastId = params.podcastId ?? ""
-
     const dispatch = useAppDispatch()
 
     const search: ISearchState = useSelector(

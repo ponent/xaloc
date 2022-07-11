@@ -1,22 +1,12 @@
 import React, { useState } from "react"
 import "./App.css"
-
 import { Group, createStyles, UnstyledButton, Center } from '@mantine/core';
-
-
-import {
-    BrandGithub,
-} from 'tabler-icons-react';
-
-import {
-    AppShell,
-    Header,
-    Text,
-    MediaQuery,
-    Burger,
-    useMantineTheme,
-} from '@mantine/core';
+import { BrandGithub, } from 'tabler-icons-react';
+import { AppShell, Header, Text, MediaQuery, Burger, useMantineTheme, } from '@mantine/core';
 import { LeftMenu, MainMenuRoutes } from "./components/Menu/LeftMenu";
+import { useAppDispatch } from "./hooks";
+import { loadSubscriptions } from "./store/subscriptions/reducer";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
     navbar: {
@@ -82,6 +72,9 @@ const App: React.FC = () => {
     const [opened, setOpened] = useState(false);
     const { classes } = useStyles();
 
+    const dispatch = useAppDispatch()
+    dispatch(loadSubscriptions())
+
     return (
         <AppShell
             styles={{
@@ -120,10 +113,10 @@ const App: React.FC = () => {
 
                         <Group position={"apart"} style={{ width: "100%" }}>
                             <div>
-                                <Text size="xl" weight={700} sx={{ lineHeight: 1 }}>
+                                <Text component={Link} to={'/'} size={'xl'} weight={700} sx={{ lineHeight: 1 }} color={theme.colors.pink[7]}>
                                     Xaloc
                                 </Text>
-                                <Text size="sm" color="dimmed" weight={500} sx={{ lineHeight: 1 }} mt={3}>
+                                <Text size="sm" color={theme.colors.pink[4]} weight={500} sx={{ lineHeight: 1 }} mt={3}>
                                     Ràdio en directe i podcasts
                                 </Text>
                             </div>
@@ -132,8 +125,7 @@ const App: React.FC = () => {
                                     <UnstyledButton
                                         aria-label="Toggle theme"
                                         className={classes.control}
-                                        //onClick={() => toggleColorScheme()}
-                                        title="Ctrl + J"
+                                        title="Go to GitHub repository"
                                     >
                                         <Text size="sm" className={classes.value}>
                                             Codi Font

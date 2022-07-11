@@ -2,14 +2,20 @@ import { render } from "react-dom"
 import { Provider } from "react-redux"
 import reportWebVitals from './reportWebVitals';
 import App from "./App"
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { store } from "./store";
+import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 
 const rootElement = document.getElementById("root")
 render(
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <MantineProvider>
+                <NotificationsProvider position="top-right">
+                    <App />
+                </NotificationsProvider>
+            </MantineProvider>
         </BrowserRouter>
     </Provider>,
     rootElement

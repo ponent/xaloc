@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface IPodcastResult {
+    platform: string;
     artistId: number;
     collectionId: number;
-    trackId: number;
+    trackId: string;
     kind: string;
     artistName: string;
     trackName: string;
@@ -16,8 +17,9 @@ export interface IPodcastResult {
     trackCount: number;
 }
 
-const EmptyIPodcastResult = () : IPodcastResult => (
+const EmptyIPodcastResult = (): IPodcastResult => (
     {
+        platform: "",
         artistId: 0,
         artistName: "",
         artworkUrl100: "",
@@ -28,7 +30,7 @@ const EmptyIPodcastResult = () : IPodcastResult => (
         kind: "",
         releaseDate: "",
         trackCount: 0,
-        trackId: 0,
+        trackId: "",
         trackName: ""
     }
 )
@@ -58,7 +60,7 @@ const initialState: ISearchState = {
     drawerOpen: false,
     podcastDetailLoading: false,
     podcastDetailResults: {
-        info: EmptyIPodcastResult(), 
+        info: EmptyIPodcastResult(),
         podcasts: []
     }
 }
@@ -107,7 +109,7 @@ export const executeSearch = createAsyncThunk(
 )
 
 export interface PodcastEpisode {
-    trackId: number;
+    trackId: string;
     episodeUrl: string;
     trackName: string;
     releaseDate: string;
@@ -118,18 +120,18 @@ export interface PodcastEpisode {
 
 export const executePodcastSearch = createAsyncThunk(
     'podcasts/details',
-    async (trackId: string/*, {dispatch}*/) : Promise<PodcastDetail> => {
+    async (trackId: string/*, {dispatch}*/): Promise<PodcastDetail> => {
         //dispatch(openDrawer()) // I don't delete that to have an example on how to dispatch actions from thunks
         //const results = await axios.get(podcast.feedUrl)
         const results = await axios.get(`https://itunes.apple.com/lookup?id=${trackId}&media=podcast&entity=podcastEpisode&limit=100`)
         const podcastInfo = results.data.results.slice(0, 1)[0] as IPodcastResult
         const parsedResults = results.data.results.slice(1) as Array<PodcastEpisode>
         return {
-             info: podcastInfo,
-             podcasts: parsedResults
+            info: { ...podcastInfo, trackId: trackId as string, platform: "itunes" },
+            podcasts: parsedResults
         } //.slice(1) // We remove the first element because iTunes gives information about the podcast but is not an episode
     }
-  )
+)
 
 export const searchSlice = createSlice({
     name: 'search',
@@ -142,8 +144,8 @@ export const searchSlice = createSlice({
                 drawerOpen: true,
                 podcastDetailLoading: true
             }
-          },
-          closeDrawer: (state: ISearchState) => {
+        },
+        closeDrawer: (state: ISearchState) => {
             return {
                 ...state,
                 drawerOpen: false,
@@ -152,7 +154,7 @@ export const searchSlice = createSlice({
                     podcasts: []
                 }
             }
-          },
+        },
         /*updateSearchResults: (state: ISearchState, action: PayloadAction<Array<IPodcastResult>>) => {
             return {
                 ...state,
@@ -187,10 +189,17 @@ export const searchSlice = createSlice({
         builder.addCase(executeSearch.fulfilled, (state, action) => {
             // Add user to the state array
             state.searchResults = action.payload.results
-            .sort((a: IPodcastResult, b: IPodcastResult) => (
-                (new Date(b.releaseDate).getTime()) - (new Date(a.releaseDate).getTime())
-            ))
-            .map((podcast: IPodcastResult) => ({...podcast, feedUrl: podcast.feedUrl.replace('http://','https://')}))
+                .sort((a: IPodcastResult, b: IPodcastResult) => (
+                    (new Date(b.releaseDate).getTime()) - (new Date(a.releaseDate).getTime())
+                ))
+                .map((podcast: IPodcastResult) => {
+                    const feedUrl = podcast.feedUrl !== undefined ? podcast.feedUrl.replace('http://', 'https://') : podcast.feedUrl
+                    return {
+                        ...podcast,
+                        feedUrl: feedUrl,
+                        platform: "itunes"
+                    }
+                })
             state.searchResultsLoading = false
             state.searchTermLastSearch = action.payload.searchTerm
             //state.loading = false
